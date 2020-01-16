@@ -128,7 +128,7 @@ session_start();
 				<li><img src="../filters/emoji.png" alt="emoji" class="simg"></li>
 				<li><img src="../filters/heart.png" alt="heart" class="simg"></li>
 				<li><img src="../filters/inspiration.png" alt="inspiration" class="simg"></li>
-				<li><img src="../filters/mushroom.png" alt="mushroom.png" class="simg"></li>
+				<li><img src="../filters/mushroom.png" alt="mushroom" class="simg"></li>
 			</ul>	
 		</div>
 	</div>
