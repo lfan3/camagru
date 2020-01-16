@@ -5,10 +5,12 @@ session_start();
 // if $passwd = null; isset($passwd) = 0; $passwd is not set and passwd is empty
 // if $passwd = "", isset($passwd) = 1; $passwd is set but passwd is empty
 // if the fied is filled with 0, it is considered as empty
+include '../database/dbupdate.php';
+
 $username = htmlspecialchars(trim($_POST['username']));
 $email    = htmlspecialchars(trim($_POST['email']));
 $passwd   = htmlspecialchars(trim($_POST['passwd']));
-$specara  = 
+$confpass = htmlspecialchars(trim($_POST['confpass']));
 $_SESSION['error'] = null;
 
 if(!isset($username) || !isset($email) || !isset($passwd) || empty($username) || empty($email) || empty($passwd) )
@@ -22,22 +24,29 @@ else{
         $_SESSION['username'] = $username;
     if(!filter_var($email, FILTER_VALIDATE_EMAIL))
         $_SESSION['error'] = "Please enter a valide email adresse.";
-    else
+    else{
         $_SESSION['email'] = $email;
+    }
     if(strlen($passwd) < 5 || strlen($passwd) > 20)
         $_SESSION['error'] = "Choice a passwd which contains 5 to 20 letter or numbers";
     else if(preg_match('/[\W]+/', $passwd))
         $_SESSION['error'] = "the passwd should contain only letters,numbers or underscore";
-    else
-        $_SESSION['passwd'] = $passwd;
+    else{
+        if($passwd === $confpass){
+            $_SESSION['passwd'] = $passwd;
+            $_SESSION['toconf'] = "Check your mail and confirm the inscription";
+        }
+        else{
+            $_SESSION['error'] = "the passwords are not the same";
+            $_SESSION['passwd'] = null;
+        }
+    }
 }
+//$url = $_SERVER['HTTP_HOST'] . str_replace("/camagru/forms/signUpVerif.php", "", $_SERVER['REQUEST_URI']);
+newuser($username, $email, $passwd); 
 
+header('Location: ../front/signUpFront.php');
+//header('Location: ../database/dbupdate.php');
 
-
-//function signup($email, $username, $passwd, $host) {
-//    $email = strtolower($email);
-//}
-
-header('Location: ../signUpFront.php');
 
 ?>

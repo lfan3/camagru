@@ -12,22 +12,29 @@ session_start();
 
 <h1>Sign Up for PICTURE WEB CAM</h1>
 
-<form name='signUpForm' method="POST" action="forms/signup.php">
+<form name='signUpForm' method="POST" action="../forms/signUpVerif.php">
 <label> username:  </label>
 <input type="text" id="username" name="username"><br />
 <label> email: </label>
 <input type="text" id="email" name="email"><br />
 <label> password: </label>
-<input type="text" id="passwd" name="passwd"><br />
+<input type="password" id="passwd" name="passwd"><br />
+<label> confirm password: </label>
+<input type="password" id="confpass" name="confpass"><br />
 <input type="submit" value="Sign Up"><br />
 
 <span>
-    <?php if($_SESSION['error']){
-        echo $_SESSION['error']."\n";
-    }
-    echo $_SESSION['username']. "\n";
-    echo $_SESSION['email']. "\n";
-    echo $_SESSION['passwd']. "\n";
+    <?php 
+        if($_SESSION['error']){
+            echo '<p style="color:red;">' . $_SESSION['error']. '</p>';
+        }
+        if(isset($_SESSION['toconf'])){
+            echo '<p style="color:green;">' . $_SESSION['toconf'] . '</p>';
+        }
+        //echo $_SESSION['username']. "\n";
+        //echo $_SESSION['email']. "\n";
+        //echo $_SESSION['passwd']. "\n";
+
     ?>
 </span>
 </form>
