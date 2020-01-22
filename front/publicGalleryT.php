@@ -27,8 +27,8 @@ session_start();
 #increase{
     text-align : center;
     position : absolute;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left : auto;
+    margin-right : auto;
     left : 0;
     right : 0;
 }
@@ -43,45 +43,65 @@ session_start();
   margin-left : 10px;
 }
 #increaseButton{
-    margin : 10px;
+  margin : 10px;
 }
 #slide{
-   border: 1px blue solid;
-   text-align : center;
-   margin-top : 38px;
-   display : flex;
+  border: 1px blue solid;
+  text-align : center;
+  margin-top : 38px;
+  display : flex;
+}
+
+#like{
+  margin-bottom : -5px;
+  z-index: 1;
+  position : absolute;
+  top : 0;
+  right : 0;
 }
 .card{
   /*  position : relative;*/
-    width : 19%;
-    height : 100px;
+    width : 20%;
     background-color : white;
-    margin-left: 2px;
-    margin-right: 2px;
-    border: 1px red solid;
+    margin-left: 3px;
+    margin-right: 3px;
 }
 .slide{
     position : relative;
-    height : 100%;
+    height : 90%;
     width : 100%;
     margin-left: 0;
     margin-right: 0;
-    margin-bottom : -2px;
-    background-color : yellow;
+    margin-bottom : -4px;
+}
+.bcard{
+    position : relative;
+    height : 40px;
+    width : 99%;
+    margin : 0 auto;
+    text-align : center;
+    border : 1px black solid; 
+    background-color : rgba(223, 247, 213, 0.6);
 }
 .commentary{
-    position : relative;
-    height : 20%;
-    width : 100%;
-    margin : 0 auto;
-    padding : 0;
-    text-align : center;
-    border : 1px black solid;
+  position : absolute;
+  height : 40px;
+  width : 70%;
+  left : 1%;
+  top : 6px;
+  margin : auto;
+  padding : 0;
+  text-align : center;
 }
+.like{
+  position : absolute;
+  margin : auto;
+  left : 0;
+  right : 0;
+}
+
 </style>
 <div id = "pagination">
- <button id = "increase" class = "button" onclick="plus(firstPageImgs)> + </button>
-  <button id = "nextPage" class = "button" "> > </button>
   <?php if($_SESSION['id']){?>
       <p> Hi </p>
   <?php }else{
@@ -95,11 +115,18 @@ session_start();
   }?>
   <div id = "controlers">
     <button id = "previPage" class = "button" onclick="moins(firstPageImgs)"> < </button>
-    <button id = "increase" class = "button"> + </button>
-    <button id = "nextPage" class = "button" onclick="plus(firstPageImgs)"> > </button>
+    <button id = "increase" class = "button" onclick="plus(firstPageImgs)"> + </button>
+    <button id = "nextPage" class = "button" > > </button>
   </div>
   <div id="slide">
   <!--
+    <div class="card">
+        <img class="slide" src="images/5e23fde8a37c0.png">
+        <div class="bcard">
+            <div class="commentary"></div>
+            <img like>
+        </div>
+    </div>
     <img class="slide" src="images/5e23fde8a37c0.png" style="width:19%">
     <img class="slide" src="images/5e23fea8e8fba.png" style="width:19%">
     <img class="slide" src="images/5e24cb9a82749.png" style="width:19%">
@@ -121,28 +148,44 @@ function firstPageImgs(imgNb, imgTab){
   var slideDiv = document.createElement("div");
   slideDiv.setAttribute("id", "slide");
   
-
   while(i < imgNb && (len-1-i) >= 0){
-    var card = document.createElement("div");
-    card.setAttribute("class", "card");
-
-    var slideImg = document.createElement("img");
-    slideImg.setAttribute("class", "slide");
-    let imgSrc = (imgTab[len - i - 1]['img']).replace("../", "");
-    slideImg.setAttribute("src", imgSrc);
-
-    var commentary = document.createElement("div");
-    commentary.setAttribute("class", "commentary");
-    commentary.innerHTML = "add a commentary"
-
-    slideDiv.appendChild(card);
-    card.appendChild(slideImg);
-    card.appendChild(commentary);
+    creatCard(len, i, slideDiv);
     i++;
   }
   pagiDiv.appendChild(slideDiv);
 }
 
+function creatCard(len, i, slideDiv){
+  var card = document.createElement("div");
+  card.setAttribute("class", "card");
+
+  var slideImg = document.createElement("IMG");
+  slideImg.setAttribute("class", "slide");
+  let imgSrc = (imgTab[len - i - 1]['img']).replace("../", "");
+  slideImg.setAttribute("src", imgSrc);
+  slideImge.addEventListener('mouseover', function(e){
+    bigPicture();
+  }, true);
+
+  var bcard = document.createElement("div");
+  bcard.setAttribute("class", "bcard");
+  var like = document.createElement("img");
+  like.setAttribute("class", "like");
+  like.setAttribute("src", "filters/like.png");
+
+  slideDiv.appendChild(card);
+  card.appendChild(slideImg);
+  card.appendChild(bcard);
+  bcard.appendChild(like);
+}
+
+//clike the pic and make it big then write some commentary inside
+function bigPicture(){
+  var commentary = document.createElement("input");
+    commentary.setAttribute("class", "commentary");
+    commentary.setAttribute("type", "text");
+    commentary.defaultValue = "nice photo !";
+}
 function plus(callback){
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function(){
@@ -154,6 +197,7 @@ function plus(callback){
   xhttp.open("GET", "functions/getSnapShot.php?t=" + Math.random(), true);
   xhttp.send();
 }
+
 
 plus(firstPageImgs);
 </script>
