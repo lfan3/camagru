@@ -1,37 +1,63 @@
 <?php
+include 'config/database.php';
 
-function add_montage($userId, $imgPath) {
-    include_once '../setup/database.php';
-    try{
-        $dbc = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-        $dbc->setAttribute(PDO::ATTR_ERRMODE, POD::ERRMODE_EXCEPTION);
-        $query = $dbc->prepare("INSERT INTO gallery (userid, img) VALUE (:userid, :img)");
-        $query->bindParam(':userid', $userId);
-        $query->bindParam(':img', $imgPath);
-        $query->execute();
-    }catch(PDOException $e){
-        echo "ERRORM: ". $e->getMesssage();
+Class Gallery {
+    private $db;
+    private $user;
+    private $passwd;
+    protected $connex;
+
+    public function __construct($db, $user, $passwd) {
+        $this->db = $db;
+        $this->user = $user;
+        $this->passwd = $passwd;
     }
-}
-
-//get all images from galery table
-function get_all_montage(){
-    include_once '../config/database.php';
-    try{
-        $dbc = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-        $dbc->setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-        $query = $dbc->prepare("SELECT userId, img FROM gallery");
-        $query->execute();
-
-        $i = 0;
-        $tab = null;
-        while($val = $query->fetch()){
-            $tab[i] = $val;
-            $i++;
+    protected function openConnection(){
+        try {
+            $this->connex = new PDO($this->db, $this->user, $this->passwd);
+            $this->connex->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $this->connex;
+        } catch (PDOException $e) {
+            echo "GalleryConnection Error " . $e->getMessage();
         }
-        $query->closeCursor();
-        return($tab);
+    }
+    public function closeConnection(){
+        $this->connex = null;
+    }
+    public function add_montage($userId, $imgPath) {
+        try{
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("INSERT INTO gallery (userid, img) VALUE (:userid, :img)");
+            $query->bindParam(':userid', $userId);
+            $query->bindParam(':img', $imgPath);
+            $query->execute();
+            $dbc = $this->closeConnection();
     }catch(PDOException $e){
-        return($e->getMessage());
+            echo "ERRORaddmontage: ". $e->getMesssage();
+        }
+    }
+    public function get_all_gallery(){
+        try{
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("SELECT userId, img FROM gallery");
+            $query->execute();
+            $i = 0;
+            $tab = [];
+            while($val = $query->fetch(PDO::FETCH_ASSOC)){
+                $tab[$i] = $val;
+                $i++;
+            }
+            $dbc = $this->closeConnection();
+            return ($tab);
+        }catch(PDOException $e){
+            echo "ERRORgetallgallery: ". $e->getMesssage();
+        }
+
     }
 }
+/******** utilisation de cette class !!! *********/
+//$gc = new Gallery($DB_DSN,$DB_USER,$DB_PASSWORD);
+//$gc->add_montage(38, "../filters/123.png");
+//echo "hello";
+//$tab = $gc->get_all_gallery();
+//print_r($tab[0]);
