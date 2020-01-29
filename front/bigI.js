@@ -6,13 +6,15 @@ var slideImgs = document.getElementsByClassName("slide");
 var username = "anonyme";
 var rest = document.getElementsByClassName("rest");
 var pagiDiv = document.getElementById("pagination");
-var imgTab;
+var galleryTab;
 var gibNb;
 
 /**************************first page images ********************* */
-function firstPageImgs(imgNb, imgTab){
+
+// begin index of image and plus()
+function firstPageImgs(imgNb, galleryTab){
   let i = 0;
-  let len = imgTab.length;
+  let len = galleryTab.length;
   var slideDiv = document.createElement("div");
 
   slideDiv.setAttribute("id", "slide");
@@ -38,9 +40,9 @@ function creatCard(len, i, slideDiv){
 function FslideImg(len, i){
   var slideImg = document.createElement("IMG");
   slideImg.setAttribute("class", "slide");
-  //let imgSrc = (imgTab[len - i - 1]['img']).replace("../", "");
-  let imgSrc = (imgTab[len - i - 1]['img']);
-  let gibNb = imgTab[len - i - 1]['id'];
+  //let imgSrc = (galleryTab[len - i - 1]['img']).replace("../", "");
+  let imgSrc = (galleryTab[len - i - 1]['img']);
+  let gibNb = galleryTab[len - i - 1]['id'];
   slideImg.setAttribute("src", imgSrc);
  
   let rest1 = document.getElementById("rest1");
@@ -168,19 +170,35 @@ function show_like_number(gibNb){
 }
 /******************************end of like ************************************/
 
-function plus(callback){
+function get_gallery_tab(){
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function(){
     if(this.readyState == 4 && this.status == 200){
-      imgTab = JSON.parse(this.responseText);
-      console.log("imgtAB", imgTab);
-      callback(5, imgTab);
+      galleryTab = JSON.parse(this.responseText);
+      console.log("galleryTab", galleryTab);
     }
   }
   xhttp.open("GET", "../functions/getSnapShot.php?t=" + Math.random(), true);
   xhttp.send();
 }
 
+function plus(imgIndex, galleryTab){
+  
+}
+/*
+function plus(callback){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){
+      galleryTab = JSON.parse(this.responseText);
+      console.log("galleryTab", galleryTab);
+      callback(5, galleryTab);
+    }
+  }
+  xhttp.open("GET", "../functions/getSnapShot.php?t=" + Math.random(), true);
+  xhttp.send();
+}
+*/
 window.addEventListener("load", function(event) {
     plus(firstPageImgs);
     FzoomOut();
