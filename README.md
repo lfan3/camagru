@@ -7,10 +7,14 @@
 - password_verify 
 
 tomorrow
-- imagecopyresampled
-- afficher all photo and only memberphoto
-- doing the views
+- zoom out
+- verif la fonction
+- plus et moins
 
+pour ameliorer
+- profile photo
+- comment box height change according the input text
+- il faut changer gib number
 
 questions?
 est ce qu4il faut masquer le url dans email?
