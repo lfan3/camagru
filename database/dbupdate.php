@@ -12,7 +12,7 @@
 
 function newuser($username, $email, $passwd){
     //you must put the include inside de fonction, otherwise, it will not work
-    include_once '../config/database.php.php';
+    include_once '../config/database.php';
     include_once '../functions/emailfunction.php';
     $email = strtolower($email);
     //update user table
@@ -54,7 +54,7 @@ function newuser($username, $email, $passwd){
 //update new token to a user who forget their password
 function passwdmail($username, $email){
     //you must put the include inside de fonction, otherwise, it will not work
-    include_once '../config/database.php.php';
+    include_once '../config/database.php';
     include_once '../functions/emailContent.php';
     $email = strtolower($email);   
     try{
@@ -85,7 +85,7 @@ function passwdmail($username, $email){
 //forget password, after the link of email
 function updatePassToken($passwd, $confpass)
 {
-    include_once '../config/database.php.php';
+    include_once '../config/database.php';
     try{
         $dbc = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
         $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

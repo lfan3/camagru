@@ -2,7 +2,8 @@
 session_start();
 include_once("../database/montage.php");
 
-$montage = get_all_montage();
+$gc = new Gallery($DB_DSN,$DB_USER,$DB_PASSWORD);
+$montageTab = $gc->get_all_gallery();
 ?>
 <!DOCTYPE html>
 <HTML>
@@ -35,7 +36,6 @@ $montage = get_all_montage();
                 echo $gallery;
               }
         ?>
-
         </div>
 
     </div>

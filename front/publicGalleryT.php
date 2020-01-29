@@ -13,7 +13,7 @@ session_start();
     left : 0;
     right : 0;
     width : 88%;
-    height : 500px;
+    height : 80%;
     border : 1px black solid;
     position : absolute;
 }
@@ -46,10 +46,22 @@ session_start();
   margin : 10px;
 }
 #slide{
-  border: 1px blue solid;
+/*  border: 1px blue solid;*/
   text-align : center;
   margin-top : 38px;
   display : flex;
+}
+.rest{
+  border : 1px red solid;
+  width : 30%;
+  height : 90%;
+  position : absolute;
+  top : 200px;
+}
+
+#rest2{
+  top : 200px;
+  right : 0;
 }
 
 #like{
@@ -59,9 +71,11 @@ session_start();
   top : 0;
   right : 0;
 }
+/* responsive definition for the height*/
 .card{
   /*  position : relative;*/
     width : 20%;
+    height : 100px;
     background-color : white;
     margin-left: 3px;
     margin-right: 3px;
@@ -73,6 +87,7 @@ session_start();
     margin-left: 0;
     margin-right: 0;
     margin-bottom : -4px;
+    cursor: zoom-in;
 }
 .bcard{
     position : relative;
@@ -99,107 +114,126 @@ session_start();
   left : 0;
   right : 0;
 }
-
+/****bigpic style */
+#bigPic{
+  /*    height : 660px;*/
+    width : 500px;
+    margin: auto;
+    margin-top : 30px;
+  /*    border: 1px blue solid;*/
+    position: relative;
+    top : 150px;
+    border-radius : 25px;
+    display :  none;
+}
+.bigPic{
+    width:500px;
+    height:365px;
+    border-radius: 25px;
+}
+#like{
+    position:absolute;
+    right :  20px;
+    top : 370px;
+}
+#likeNub{
+    position : absolute;
+    right : 60px;
+    top : 384px;
+}
+label{
+    position:absolute;
+    font-weight : bold;
+    left :  20px;
+    top : 380px;
+}
+#comment{
+    position:absolute;
+    left :  20px;
+    top : 410px;
+}
+textarea {
+    border: 1px solid #969A97;
+}
+input[id="comment"]{
+    width: 300px;
+    height: 50px;
+}
+input[name="submitcomment"]{
+    position: relative;
+    top : 130px;
+    left: 360px;
+}
+.commentOuterDiv{
+    width : 380px;
+    height : 70px;
+    border : 1px solid black;
+    position:absolute;
+    top : 530px;
+    left : 20px;
+    border-radius : 25px;
+}
+.usernameDiv{
+    width : 80px;
+    height : 50px;
+    text-align : center;
+    border : 1px solid red;
+    padding-top: 20px;
+}
+.commentTxtDiv{
+    width : 300px;
+    height : 50px;
+    border : 1px solid green;
+    position:absolute;
+    left : 80px;
+    top : 0px;
+    padding-top : 20px;
+    overflow:auto;
+}
+/**************end of bigpic style ****************** */
 </style>
+
+
+<!-- =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= -->
+<!-- =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= -->
+<!-- =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= -->
+
 <div id = "pagination">
   <?php if($_SESSION['id']){?>
       <p> Hi </p>
   <?php }else{
-    //$length = count($allmontages);
-    //while($length > 0){
-    //  $imgPath = str_replace("../", "", $allmontages[$length - 1]['img']);
-    //  echo '<img class="pGallery" src=' . $imgPath . '>';
-    //  $length--;
-    //}
-    //echo '<img class="pGallery" src="filters/emoji.png">';
+    //quelque code
   }?>
   <div id = "controlers">
     <button id = "previPage" class = "button" onclick="moins(firstPageImgs)"> < </button>
     <button id = "increase" class = "button" onclick="plus(firstPageImgs)"> + </button>
     <button id = "nextPage" class = "button" > > </button>
   </div>
-  <div id="slide">
-  <!--
-    <div class="card">
-        <img class="slide" src="images/5e23fde8a37c0.png">
-        <div class="bcard">
-            <div class="commentary"></div>
-            <img like>
-        </div>
-    </div>
-    <img class="slide" src="images/5e23fde8a37c0.png" style="width:19%">
-    <img class="slide" src="images/5e23fea8e8fba.png" style="width:19%">
-    <img class="slide" src="images/5e24cb9a82749.png" style="width:19%">
-    <img class="slide" src="images/5e24cb9a82749.png" style="width:19%">
-    <img class="slide" src="images/5e24cb9a82749.png" style="width:19%">
-    -->
-  </div>
- 
+  <div id="slide"></div>
+  <div id= "rest1" class="rest"></div>
+  <div id= "rest2" class="rest"></div>
 </div>
 
-<script>
-var imgTab;
-var pagiDiv = document.getElementById("pagination");
+<div id="bigPic" class = "71">
+    <img class="bigPic" src="../images/5e23fde8a37c0.png" id="bigPicImg">
+    <span id ="likeNub"> </span>
+    <img id ="like" src="../filters/like.png">
+    <form method = "POST" action = "../functions/Fcomment.php">
+        <label>Comments</label>
+        <textarea rows = "5" cols = "60" id="comment" name = "comment"></textarea>
+        <input type="submit" value="Done" name="submitcomment">
+    </form>
+    <div id = "commentPart">
+        <!-- comments -->
+    </div>
+  </div>
 
-function firstPageImgs(imgNb, imgTab){
+<!-- =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= -->
+<!-- =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= -->
+<!-- =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= -->
 
-  let i = 0;
-  let len = imgTab.length;
-  var slideDiv = document.createElement("div");
-  slideDiv.setAttribute("id", "slide");
-  
-  while(i < imgNb && (len-1-i) >= 0){
-    creatCard(len, i, slideDiv);
-    i++;
-  }
-  pagiDiv.appendChild(slideDiv);
-}
-
-function creatCard(len, i, slideDiv){
-  var card = document.createElement("div");
-  card.setAttribute("class", "card");
-
-  var slideImg = document.createElement("IMG");
-  slideImg.setAttribute("class", "slide");
-  let imgSrc = (imgTab[len - i - 1]['img']).replace("../", "");
-  slideImg.setAttribute("src", imgSrc);
-  slideImge.addEventListener('mouseover', function(e){
-    bigPicture();
-  }, true);
-
-  var bcard = document.createElement("div");
-  bcard.setAttribute("class", "bcard");
-  var like = document.createElement("img");
-  like.setAttribute("class", "like");
-  like.setAttribute("src", "filters/like.png");
-
-  slideDiv.appendChild(card);
-  card.appendChild(slideImg);
-  card.appendChild(bcard);
-  bcard.appendChild(like);
-}
-
-//clike the pic and make it big then write some commentary inside
-function bigPicture(){
-  var commentary = document.createElement("input");
-    commentary.setAttribute("class", "commentary");
-    commentary.setAttribute("type", "text");
-    commentary.defaultValue = "nice photo !";
-}
-function plus(callback){
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function(){
-    if(this.readyState == 4 && this.status == 200){
-      imgTab = JSON.parse(this.responseText);
-      callback(5, imgTab);
-    }
-  }
-  xhttp.open("GET", "functions/getSnapShot.php?t=" + Math.random(), true);
-  xhttp.send();
-}
+<script src=bigI.js></script>
 
 
-plus(firstPageImgs);
-</script>
 
 

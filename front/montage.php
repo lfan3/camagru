@@ -10,17 +10,20 @@ session_start();
  
 <style>
 #containerOuter {
-	margin: 0px auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
 	width: 550px;
-	height: 1200px;
-	border: 1px #333 solid;
+	height: 650px;
+	border: 1px green solid;
+
 }
 #container {
 	margin: 0px auto;
 	width: 500px;
 	height: 375px;
 	position: relative;
-	top : 160px;
+	top : 50px;
 	border: 10px #333 solid;
 }
 #videoElement {
@@ -60,11 +63,26 @@ session_start();
 
 #worksp{
 	width: 520px;
-	height: 500px;
+	height: 50px;
 	border: 1px solid blue;
 	position: relative;
-	top: 270px;
+	top: 180px;
 	left: 15px;
+}
+#start{
+	position: absolute;
+	left:80px;
+	top : 15px;
+}
+#reprendre{
+	position: absolute;
+	left: 215px;
+	top :15px;
+}
+#save{
+	position: absolute;
+	right: 80px;
+	top : 15px;
 }
 #canvas{
     width: 500px;
@@ -72,6 +90,7 @@ session_start();
 	border: 1px solid black;
 	position: relative;
 	left:5px;
+	display: none;
 }
 #outer{
 	height: 84px;
@@ -92,18 +111,8 @@ session_start();
 	position: absolute;
 	top: 390px;
 }
-#start{
-	position: absolute;
-	left:80px
-}
-#save{
-	position: absolute;
-	right: 80px;
-}
-#delete{
-	position: absolute;
-	left: 215px;
-}
+
+
 
 </style>
 </head>
@@ -135,37 +144,11 @@ session_start();
 	<div id = worksp>
 		<canvas id = "canvas"></canvas>
 		<button id = "start" class = "ub">take photo</button> 
-		<button id = "delete" class = "ub">delete photo</button> 
+		<button id = "reprendre" class = "ub">reprendre photo</button> 
 		<button id = "save" class = "ub">save photo</button> 
-		<button id = "test" class = "ub"> test </button>
 		<div id = "miniature"></div>
 	</div>
 </div>
-
-<script type="text/javascript" src="../js/webcame.js"></script>
-<script>
-	var test = document.getElementById("test");
-	test.onclick = function(){
-		testButton();
-	}
-
-	function testButton(){
-		var bar = {
-			foo : 'foo',
-			nice : 'nice'
-		}
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function(){
-			if (this.readyState === 4 && this.status === 200);
-			console.log( xhr.responseText);
-		}
-		xhr.open("POST", "../testJson.php", true);
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.send("ok=yes");
-		console.log("tedt");
-	}
-
-</script>
-	
+<script type="text/javascript" src="../js/webcameTs.js"></script>
 </body>
 </html>

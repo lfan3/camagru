@@ -1,7 +1,7 @@
 <?php
 
 function loginVerif($username, $passwd, $email){
-    include_once '../config/database.php.php';
+    include_once '../config/database.php';
     $email = strtolower($email);
     try{
         $dbc = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);

@@ -21,5 +21,5 @@ else{
     $_SESSION['id'] = $data['id'];
 }
 
-header('Location: ../front/index.php');
+header('Location: ../index.php');
 

@@ -1,11 +1,9 @@
 <?php
-// i need to get the photo and filter
-// 1) first i stock the photo into local fichier
-// 2) i send the photoPath to database and the filter path
-// 3) need to create another php to coller the two images from database together
-// and then send to client
+session_start();
+/*********************************stock photo dans local ****************************** */
+include '../config/database.php';
+include '../database/montage.php';
 
-/*********************************stock image dans local ****************************** */
 define('UPLOAD_DIR', '../images/');
 $file = UPLOAD_DIR . uniqid() . '.png';
 $photo = $_POST['photo'];
@@ -20,40 +18,52 @@ $success = file_put_contents($file, $decode);
 //bug bizzar !!!
 //$im = imagecreatefromstring($decode, TRUE);
 //imagepng($im, $file, 0);
+
+/******************************* montage and create the final snapshot *********** */
 if($success){
     $i = 0;
     $fn = count($filter);
-    while($i<$fn){
-        $name = $filter[$i] . "png";
-        $filters[$i] = imagecreatefrompng('../filters/'.$fn);
-        $kx = $filter[$i] . "_x";
-        $test = $imgAbPos
-    }
-    //$php[0] = imagecreatefrompng('../filters/bored.png');
-    //$php[1] = imagecreatefrompng('../filters/emoji.png');
-    
-    // Création de l'image principale, 100x100
-    $im = imagecreatetruecolor(500, 375);
-    $bkm = imagecreatefrompng($file);
-    
-    imagesetbrush($im, $bkm);
-    // Dessine quelques brosses
-    imageline($im, 250, 187, 250, 187, IMG_COLOR_BRUSHED);
-    
-    imagesetbrush($im, $filters[0]);
-    imageline($im, 50, 50, 50, 50, IMG_COLOR_BRUSHED);
-    
-    //imagesetbrush($im, $php[1]);
-    //imageline($im, 100, 100, 100, 100, IMG_COLOR_BRUSHED);
 
-    
-    imagepng($im, '../montage/first.png');
+    $kx = $filter[0] . "_x";
+    $test = $imgAbPos->$kx + ' ';
+
+    while($i<$fn){
+        $name = $filter[$i] . ".png";
+        $filters[$i] = imagecreatefrompng('../filters/'.$name);
+        $kx = $filter[$i] . "_x";
+        $ky = $filter[$i] . "_y";
+        $fpos_x[$i] = ($imgAbPos->$kx);
+        $fpos_y[$i] = ($imgAbPos->$ky);
+        $i++;
+    }   
+    // Création de l'image principale/background
+    $im = imagecreatetruecolor(500, 375);
+    $bkm = imagecreatefrompng($file);  
+    imagesetbrush($im, $bkm);
+    imageline($im, 250, 187, 250, 187, IMG_COLOR_BRUSHED);
+    $i = 0;
+    while($i<$fn){
+        imagesetbrush($im, $filters[$i]);
+        $fx = $fpos_x[$i] + 32;
+        $fy = $fpos_y[$i] + 32;
+        imageline($im, $fx, $fy, $fx, $fy, IMG_COLOR_BRUSHED);
+        $i++;
+    }
+    define('SNAP_DIR', '../snapshots/');
+    $snapshot = SNAP_DIR . uniqid() . '.png';
+    file_put_contents("../lastPhotoRecord.txt", $snapshot);
+    imagepng($im, $snapshot);
+//    add_montage($_SESSION['id'], $snapshot);
+    $gallery = new Gallery($DB_DSN,$DB_USER,$DB_PASSWORD);
+    $gallery->add_montage(38, $snapshot);
 }
 // Affichage de l'image au navigateur
 //header('Content-type: image/png');
 //imagepng($im);
 //imagedestroy($im);
 //imagedestroy($php);
+
+//header("Location: ../test.php"); ????
 
 
 

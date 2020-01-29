@@ -7,8 +7,9 @@ var imgObj = new Array(7);
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var start = document.getElementById('start');
-var deleteImg = document.getElementById('delete');
+var reprendre = document.getElementById('reprendre');
 var save = document.getElementById('save');
+var miniature = document.getElementById('miniature');
 var filterName = [];
 
 var imgAbPos = {
@@ -50,10 +51,13 @@ function handlevideo(stream){
   canvas.width = 500;
   canvas.height = 375;
   start.onclick = function(){
-    startButton(video);
+    //startButton(video);
+    startButton();
+    //createImg(src);
+
   };
-  deleteImg.onclick = function(){
-    deleteButton();
+  reprendre.onclick = function(){
+    reprendreButton();
   }
   save.onclick = function(){
     saveButton(filterName);
@@ -61,28 +65,34 @@ function handlevideo(stream){
 }
 
 /**************************FUNCTION RELATED TO handlevideo()****************** */
-function startButton(video){
-  ctx.drawImage(video, 0, 0, 500, 375); 
+//function startButton(video){
+//  ctx.drawImage(video, 0, 0, 500, 375); 
+//}
+
+function startButton(){
+  if(!filterName.length)
+    alert("You need to choose a filter in order to take a picture !");
+  else{
+    video.pause();
+    ctx.drawImage(video, 0, 0, 500, 375); 
+  }
 }
 
-function deleteButton(){
-  ctx.clearRect(0, 0, 500, 375);
+function reprendreButton(){
+  video.play();
 }
 
 function saveButton(filterName){
   var imgData = canvas.toDataURL("image/png");
- // var output=imgData.replace(/^data:image\/(png|jpg);base64,/, "");
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function(){
-		if(this.readyState == 4 && this.status == 200){
-      filterName.forEach(element => {
-        console.log(element);
-      });
-		};
+  // var output=imgData.replace(/^data:image\/(png|jpg);base64,/, "");
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){ 
+        console.log("imgAbPos=" + JSON.stringify(imgAbPos));
+    };
   };
-  console.log(imgData);
   xhttp.open("POST", "../functions/Fmontage.php", true);
-	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhttp.send("photo=" + imgData + "&filter=" + JSON.stringify(filterName) + "&imgAbPos=" + JSON.stringify(imgAbPos));
 }
 /***************************SMALL CANVAS************************************** */
@@ -119,25 +129,32 @@ function vsMouseMove(vcArray){
       switch(vsN){
         case 1 :
             imgAbPos.alcohol_x = aleft;
-            imgAbPos.alcohol_y = atop; 
+            imgAbPos.alcohol_y = atop;
+            break; 
         case 2:
             imgAbPos.bored_x = aleft;
             imgAbPos.bored_y = atop;
+            break; 
         case 3:
             imgAbPos.botanical_x = aleft;
             imgAbPos.botanical_y = atop;
+            break; 
         case 4:
             imgAbPos.emoji_x = aleft;
             imgAbPos.emoji_y = atop;
+            break; 
         case 5:
             imgAbPos.heart_x = aleft;
             imgAbPos.heart_y = atop;
+            break; 
         case 6:
             imgAbPos.inspiration_x = aleft;
             imgAbPos.inspiration_y = atop;
+            break; 
         case 7:
             imgAbPos.mushroom_x = aleft;
             imgAbPos.mushroom_y = atop;            
+            break; 
       }
     }
   }, true);
@@ -176,7 +193,6 @@ function getFilter(){
 			simg[x].addEventListener("click", function(){	
       let sm = this.alt;
       filterName.push(sm);
-      
       console.log(filterName[filterName.length - 1]);
       
 			imgObj[x] = new Image();

@@ -1,5 +1,5 @@
 <?php
-include 'config/database.php';
+include '../config/database.php';
 
 Class Gallery {
     private $db;
@@ -39,7 +39,7 @@ Class Gallery {
     public function get_all_gallery(){
         try{
             $dbc = $this->openConnection();
-            $query = $dbc->prepare("SELECT userId, img FROM gallery");
+            $query = $dbc->prepare("SELECT id, userId, img FROM gallery");
             $query->execute();
             $i = 0;
             $tab = [];
@@ -52,7 +52,6 @@ Class Gallery {
         }catch(PDOException $e){
             echo "ERRORgetallgallery: ". $e->getMesssage();
         }
-
     }
 }
 /******** utilisation de cette class !!! *********/
