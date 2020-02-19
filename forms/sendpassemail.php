@@ -8,8 +8,10 @@ $email    = htmlspecialchars(trim($_POST['email']));
 
 if(isset($username) && isset($email) && !empty($username) && !empty($email)){
     passwdmail($username, $email);
-    echo "the confirmation email is already sended to your email.";
+    $_SESSION['info'] = "the confirmation email is already sended to your email.";
 }
 else
     $_SESSION['error'] = "All Fields must be filled !";
+
+header("location: ../front/forgetpasswd.php");
 ?>

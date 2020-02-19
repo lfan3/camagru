@@ -37,6 +37,20 @@ Class Comment {
             echo "ERRORaddcomment: ". $e->getMessage();
         }
     }
+    public function drop_comment($userId, $commentText, $gid){
+        try{
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("DELETE FROM comment WHERE (userid =:userid AND gid =:gid AND comment =:comment)");
+            $query->bindParam(':userid', $userId);
+            $query->bindParam(':gid', $gid);
+            $query->bindParam(':comment', $commentText);
+            $query->execute();
+            $dbc = $this->closeConnection();
+        }catch(PDOException $e){
+            echo "drop_comment Error " . $e->getMessage();
+        }
+
+    }
     public function get_comment_from_img($gid) {
         try{
             $dbc = $this->openConnection();
@@ -59,7 +73,7 @@ Class Comment {
 
 /******** utilisation de cette class !!! *********/
 //$gc = new Comment($DB_DSN,$DB_USER,$DB_PASSWORD);
-//$gc->add_comment(38, "nice picture", 71);
+//$gc->drop_comment(38, "i like 72", 72);
 //$gc->add_comment(38, "i love it", 71);
 //$gc->add_comment(38, "such wonderful", 71);
 //$gc->add_comment(39, "lovely picture", 71);

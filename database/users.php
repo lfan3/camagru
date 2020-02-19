@@ -36,10 +36,84 @@ Class Users {
             echo "getUserName Error " . $e->getMessage();
         }
     }
+    public function get_user_email($id){
+        try{
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("SELECT id, email FROM users Where id = $id");
+            $query->execute();
+            $val = $query->fetch(PDO::FETCH_ASSOC);
+            $email = $val['email'];
+            return ($email);
+        } catch(PDOException $e) {
+            echo "getUserEmail Error " . $e->getMessage();
+        }
+    }
+    public function update_info($id, $username, $email, $passwd){
+        try{
+            $passwd = password_hash($passwd, PASSWORD_DEFAULT);
+            $data = [
+                'username' => $username,
+                'email' => $email,
+                'passwd' => $passwd
+            ];
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("UPDATE users SET username=:username, email=:email, passwd=:passwd  Where id=$id");
+            $query->execute($data);
+        } catch(PDOException $e) {
+            echo "update_info Error " . $e->getMessage();
+        }
+    }
+    public function update_info_sans_pass($id, $username, $email){
+        try{
+            $passwd = password_hash($passwd, PASSWORD_DEFAULT);
+            $data = [
+                'username' => $username,
+                'email' => $email
+            ];
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("UPDATE users SET username=:username, email=:email Where id=$id");
+            $query->execute($data);
+        } catch(PDOException $e) {
+            echo "update_info Error " . $e->getMessage();
+        }
+    }
+    public function update_user_preference_p($id){
+        try{
+            $passwd = password_hash($passwd, PASSWORD_DEFAULT);
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("UPDATE users SET preference = 1 Where id=$id");
+            $query->execute($data);
+        } catch(PDOException $e) {
+            echo "update_user_prefe_p Error " . $e->getMessage();
+        }
+    }
+    public function update_user_preference_n($id){
+        try{
+            $passwd = password_hash($passwd, PASSWORD_DEFAULT);
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("UPDATE users SET preference = 0 Where id=$id");
+            $query->execute($data);
+        } catch(PDOException $e) {
+            echo "update_user_prefe_n Error " . $e->getMessage();
+        }
+    }
+    public function get_user_preference($id){
+        try{
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("SELECT id, preference FROM users Where id = $id");
+            $query->execute();
+            $val = $query->fetch(PDO::FETCH_ASSOC);
+            $pref = $val['preference'];
+            return ($pref);
+        } catch(PDOException $e) {
+            echo "getUserEmail Error " . $e->getMessage();
+        }
+    }
 }
-/**************************************** 
-$db = new Users($DB_DSN,$DB_USER,$DB_PASSWORD);
-echo $db->get_user_name(38);
-echo $db->get_user_name(39);
-*****************************************/
+///****************************************/
+//$db = new Users($DB_DSN,$DB_USER,$DB_PASSWORD);
+//echo $db->get_user_preference(38);
+//echo $db->get_user_(38);
+//echo $db->get_user_name(39);
+/*****************************************/
 ?>

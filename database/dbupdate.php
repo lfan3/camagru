@@ -13,7 +13,7 @@
 function newuser($username, $email, $passwd){
     //you must put the include inside de fonction, otherwise, it will not work
     include_once '../config/database.php';
-    include_once '../functions/emailfunction.php';
+    include_once '../functions/emailContent.php';
     $email = strtolower($email);
     //update user table
     try{
@@ -28,6 +28,10 @@ function newuser($username, $email, $passwd){
             $query->closeCursor();
             return;
         };
+        if(!$_SESSION['error']){
+            $_SESSION['toconf'] = "Check your mail and confirm the inscription";
+        }
+
         $query->closeCursor();
 
         $passwd = password_hash($passwd, PASSWORD_DEFAULT);
@@ -74,6 +78,7 @@ function passwdmail($username, $email){
             $updatetoken = $dbc->prepare($mysql);
             $updatetoken->execute();
         }else{
+           
             $_SESSION['error'] = "The information is not correct";
             return;
         };
@@ -83,7 +88,7 @@ function passwdmail($username, $email){
     }
 }
 //forget password, after the link of email
-function updatePassToken($passwd, $confpass)
+function updatePassTokenT($passwd, $confpass, $id)
 {
     include_once '../config/database.php';
     try{
@@ -96,11 +101,57 @@ function updatePassToken($passwd, $confpass)
                 $mysql = "UPDATE users SET passwd = '$passwd', token = '$token' WHERE id = '$id'";
                 $query = $dbc->prepare($mysql);
                 $query->execute();
-                echo "<p>you pass is updated</p>";
-                echo "<a href= ../front/index.php> go back login in </a>";               
+                ?>
+
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <link rel="stylesheet" href = "../front/css/style.css">
+                    <style>
+                    .wrap{
+                        background-color:#1abc9c;
+                    }
+                    a{
+                        color:unset;
+                        text-transform : lowercase;
+                    }
+                    </style>
+                </head>
+                <body> 
+                    <h1>Camagru APP</h1>
+                    <div class="wrap --rtn">
+                        <?php echo "<p style='color:#f0d1c5; text-align:center; font-size : 2em; position:relative; top:12em'>your password is updated</p>"; ?>
+                        <?php echo "<p style='color:#f0d1c5; text-align:center; font-size : 1.5em; position:relative; top:15em'><a href= ../index.php> I go to login in </a></p>"; ?>
+                    
+                    </div>
+                </body>
+                </html>
+
+                <?php
+                             
         }else{
             echo "the Two passwords are not the same";
         }      
+    }catch (PDOException $e){
+        echo "ERROR2: " . $e->getMessage();
+    }   
+}
+
+function updatePassToken($passwd, $confpass, $id)
+{
+    include_once '../config/database.php';
+    try{
+        $dbc = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+        $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+       
+        $passwd = password_hash($passwd, PASSWORD_DEFAULT);
+        $token = uniqid(rand(), true);
+        $mysql = "UPDATE users SET passwd = '$passwd', token = '$token' WHERE id = '$id'";
+        $query = $dbc->prepare($mysql);
+        $query->execute();
+                             
     }catch (PDOException $e){
         echo "ERROR2: " . $e->getMessage();
     }   

@@ -12,6 +12,8 @@ $email    = htmlspecialchars(trim($_POST['email']));
 $passwd   = htmlspecialchars(trim($_POST['passwd']));
 $confpass = htmlspecialchars(trim($_POST['confpass']));
 $_SESSION['error'] = null;
+$_SESSION['toconf'] = null;
+
 
 if(!isset($username) || !isset($email) || !isset($passwd) || empty($username) || empty($email) || empty($passwd) )
     $_SESSION['error'] = "All the fields must be filled";
@@ -28,25 +30,29 @@ else{
         $_SESSION['email'] = $email;
     }
     if(strlen($passwd) < 5 || strlen($passwd) > 20)
-        $_SESSION['error'] = "Choice a passwd which contains 5 to 20 letter or numbers";
+        $_SESSION['error'] = "Choice a passwd which contains 5 to 20 letter and numbers";
+    else if(!(preg_match('/[A-Za-z]/', $passwd) && preg_match('/[0-9]/', $passwd)))
+        $_SESSION['error'] = "Choice a passwd which contains both letter and numbers";
     else if(preg_match('/[\W]+/', $passwd))
-        $_SESSION['error'] = "the passwd should contain only letters,numbers or underscore";
+        $_SESSION['error'] = "the passwd should contain only letters and numbers or underscore";
     else{
         if($passwd === $confpass){
             $_SESSION['passwd'] = $passwd;
-            $_SESSION['toconf'] = "Check your mail and confirm the inscription";
         }
         else{
             $_SESSION['error'] = "the passwords are not the same";
             $_SESSION['passwd'] = null;
         }
     }
+
+}
+
+if(!$_SESSION['error']){
+    newuser($username, $email, $passwd); 
 }
 //$url = $_SERVER['HTTP_HOST'] . str_replace("/camagru/forms/signUpVerif.php", "", $_SERVER['REQUEST_URI']);
-newuser($username, $email, $passwd); 
 
 header('Location: ../front/signUpFront.php');
 //header('Location: ../database/dbupdate.php');
-
 
 ?>

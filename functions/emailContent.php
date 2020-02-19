@@ -1,5 +1,5 @@
 <?php
-$subject = "confirmation email from Camagru";
+$subject = "Email from Camagru";
 
 //new user sign up mail
 function sendenumail($email, $username, $token){
@@ -21,7 +21,6 @@ function sendenumail($email, $username, $token){
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
     $headers .= 'Content-Transfer-Encoding: 8bit';
     $headers .= 'From: Camagru' . "\r\n";
-    $_SESSION['error'] = 'email sended to ' . $email;
     mail($email,$subject,$message,$headers);
 }
 
@@ -49,4 +48,23 @@ function sendfpmail($email, $id, $token){
     mail($email,$subject,$message,$headers);
 }
 
+// send comment to photo owner
+function sendCommentNotif($email, $username){
+    $message = '
+    <html>
+    <head>
+        <title>Camagru</title>
+    </head>
+    <body>
+    <p>Welcome to Camagru!</p>
+    <p>You have received a new commentary from ' . $username .' !</p>
+    <p>
+    </body>
+    </html>';
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'Content-Transfer-Encoding: 8bit';
+    $headers .= 'From: Camagru' . "\r\n";
+    mail($email, $subject, $message, $headers);
+}
 ?>

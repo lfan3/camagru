@@ -48,6 +48,7 @@ try {
         passwd VARCHAR(255) NOT NULL,
         token VARCHAR(100) NOT NULL,
         verified INT NOT NULL DEFAULT 0,
+        preference BOOLEAN DEFAULT false,
         creationdate VARCHAR(20) NOT NULL
         )";
     $dbc->exec($query);
@@ -103,16 +104,25 @@ try{
 try{
     $datab = new DBConnection($DB_DSN, $DB_USER, $DB_PASSWORD);
     $dbc = $datab->openConnection();
-    $query = "CREATE TABLE IF NOT EXISTS liketable(
+    $query = "CREATE TABLE IF NOT EXISTS comment(
         id INT NOT NULL AUTO_INCREMENT,
         userid INT NOT NULL,
         gid INT NOT NULL,
-        i_like   BOOLEAN NOT NULL DEFAULT 0,
+        comment VARCHAR(500),
         PRIMARY KEY (id),
-        FOREIGN KEY (userid) REFERENCES users(id),
-        FOREIGN KEY (gid) REFERENCES gallery(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+    
+        CONSTRAINT ft_comment_ibfk_1
+    	    FOREIGN KEY (userid)
+   		    REFERENCES users(id)
+    	    ON DELETE CASCADE
+    	    ON UPDATE CASCADE,
+    
+        CONSTRAINT ft_comment_ibfk_2
+    	    FOREIGN KEY (gid)
+   		    REFERENCES gallery(id)
+    	    ON DELETE CASCADE
+    	    ON UPDATE CASCADE
+
     )";
     $dbc->exec($query);
     echo "liketable is created";

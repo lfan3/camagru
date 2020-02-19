@@ -53,6 +53,18 @@ Class Like {
             echo "ERRORaddlike: ". $e->getMessage();
         }
     }
+    public function drop_like($userId, $gid){
+        try{
+            $dbc = $this->openConnection();
+            $query = $dbc->prepare("DELETE FROM liketable WHERE (userid =:userid AND gid =:gid)");
+            $query->bindParam(':userid', $userId);
+            $query->bindParam(':gid', $gid);
+            $query->execute();
+            $dbc = $this->closeConnection();
+        }catch(PDOException $e){
+            echo "drop_like Error " . $e->getMessage();
+        }
+    }
     public function get_likes_per_img($gid){
         try{
             $dbc = $this->openConnection();
@@ -72,6 +84,7 @@ Class Like {
 
 
 //$gc = new Like($DB_DSN,$DB_USER,$DB_PASSWORD);
+//$gc->drop_like(38, 71);
 //$gc->add_like(38, 71);
 //$gc->add_like(39, 71);
 //$likeNb = $gc->get_likes_per_img(71);

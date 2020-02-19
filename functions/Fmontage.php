@@ -26,7 +26,8 @@ if($success){
 
     $kx = $filter[0] . "_x";
     $test = $imgAbPos->$kx + ' ';
-
+    $userId = $_SESSION['id'];
+ 
     while($i<$fn){
         $name = $filter[$i] . ".png";
         $filters[$i] = imagecreatefrompng('../filters/'.$name);
@@ -51,11 +52,12 @@ if($success){
     }
     define('SNAP_DIR', '../snapshots/');
     $snapshot = SNAP_DIR . uniqid() . '.png';
-    file_put_contents("../lastPhotoRecord.txt", $snapshot);
+    echo $snapshot;
+//    file_put_contents("../lastPhotoRecord.txt", $snapshot);
     imagepng($im, $snapshot);
 //    add_montage($_SESSION['id'], $snapshot);
     $gallery = new Gallery($DB_DSN,$DB_USER,$DB_PASSWORD);
-    $gallery->add_montage(38, $snapshot);
+    $gallery->add_montage($userId, $snapshot);
 }
 // Affichage de l'image au navigateur
 //header('Content-type: image/png');

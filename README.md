@@ -1,20 +1,35 @@
 #todo#
 - see the validation of entree
 - bitnami apps: https://docs.bitnami.com/aws/infrastructure/lamp/administration/create-custom-application-php/
-- bindparam
-- FOREIGN KEY FOR THE DATABASE
-- hash password
-- password_verify 
 
-tomorrow
-- zoom out
-- verif la fonction
-- plus et moins
+
+
+- delete commentary part
+- ajouter un alert pour dire quil faut devenir membre pour commenter
+- minajs.php FdeletImg fiveImges (10 or 15)or zoomout
+- footer responsive if the screen is very small
+
+source:
+https://www.w3schools.com/php/php_file_upload.asp
+https://stackoverflow.com/questions/10906734/how-to-upload-image-into-html5-canvas
+
+
+- not member can not write in the formule
+- when delike not need to refresh page
+
+
 
 pour ameliorer
+- miniaJs.php change to pure js
+- when we give a commentary, let the page stay on the commentary
 - profile photo
 - comment box height change according the input text
-- il faut changer gib number
+- il faut changer gib number 
+- dans publicgALEERY,bigC.js THE ajax can be used only once.
+- change alert to popup
+- gallery affichage depuis php directement avec get all snapshots 
+- datase/ updateprof dbupdate the userpart can be improved in dbupdate
+- after change the profile, telle user that the profile has been changed
 
 questions?
 est ce qu4il faut masquer le url dans email?
@@ -62,6 +77,8 @@ $content = str_replace(' ', '+', $content);
         callback(name);
     }
     processUserInput(salutation);
+
+-window.location.href.indexOf("toto");
 
 #php new things
 - php:// manual

@@ -4,7 +4,8 @@
 //if token is ok
 //succesfulled signed in
 //otherwise not good.
-include_once '../config/database.php.php';
+session_start();
+include_once '../config/database.php';
 
 $username = $_GET['user'];
 $token = $_GET['token'];
@@ -31,9 +32,33 @@ try{
                    WHERE username = '$username'";
         $updatequery = $dbc->prepare($vquery);
         $updatequery->execute();
-        echo "<p> Your email has been successfully confirmed! Click the button below to login in </p>";
-        echo '<a href = "index.php">
-        return to login </a>';
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <link rel="stylesheet" href = "css/style.css">
+            <style>
+            .wrap{
+                background-color:#1abc9c;
+            }
+            a{
+                text-transform: lowercase;
+            }
+            </style>
+        </head>
+        <body> 
+            <h1 >Camagru APP</h1>
+            <div class="wrap --rtn">
+                <?php $_SESSION['error'] = null;?>
+            
+                <?php echo $_SESSION['error'];?>
+                <?php echo "<p style='color:#f0d1c5; font-size : 1.2em'><a href = '../index.php'><< return to login </a></p>" ?>
+                <?php echo "<p style='color:#f0d1c5; text-align:center; font-size : 2em; position:relative; top:15em'> Your email has been successfully confirmed!"; ?>
+            </div>
+        </body>
+        </html>
+        <?php
     };
 }catch (PDOException $e){
     echo "ERROR: " . $e->getMessage();
