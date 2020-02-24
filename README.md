@@ -79,6 +79,7 @@ $content = str_replace(' ', '+', $content);
     processUserInput(salutation);
 
 -window.location.href.indexOf("toto");
+- problme de viter les array : https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript
 
 #php new things
 - php:// manual
