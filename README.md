@@ -84,6 +84,7 @@ $content = str_replace(' ', '+', $content);
 #php new things
 - php:// manual
 - use jsons.stingify (object), in the php, we need to transfer the object into array: array = (array)object;
+- dans users.php, mysql squery, la facon update,select with user = :user, not the same
 
 
 
